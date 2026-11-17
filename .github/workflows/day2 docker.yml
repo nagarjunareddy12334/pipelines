@@ -1,34 +1,33 @@
-name : Docker Build and Push
+name: Build and Push Docker Image
+
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  docker-build-and-push:
+  build-and-push:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: my-app
-      IMAGE_TAG: latest
 
     steps:
-      # STEP 1: CHECKOUT CODE
-      - name: Checkout the code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-    #step 2: DOCKER buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-    #step 3: docker hub login
-      - name: Docker Hub Login
+
+      - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-    #step 4: docker build and push
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
         with:
-          context:
+          context: .
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}      
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/demo:latest 
