@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: day3
     steps:
   #step 1: Checkout the code
       - name: Checkout the code
@@ -34,4 +37,4 @@ jobs:
           name: nodejs-build
           path: dist/
           retention-days: 30
-          
+
