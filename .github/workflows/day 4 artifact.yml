@@ -1,4 +1,3 @@
-
 name: Artifact Management Pipeline
 
 on:
@@ -11,12 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Day 3
 
     steps:
-      # Step 1: Checkout
+      # Step 1: Checkout code
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -24,23 +20,37 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version: '20'
 
-      # Step 3: Install Dependencies
+      # Step 3: Install dependencies
       - name: Install Dependencies
-        run: npm ci
+        working-directory: Day 3
+        run: npm install
 
-      # Step 4: Build Application
+      # Step 4: Run tests
+      - name: Run Tests
+        working-directory: Day 3
+        run: npm test
+
+      # Step 5: Build application
       - name: Build Application
+        working-directory: Day 3
         run: npm run build
 
-      # Step 5: Upload Artifact
+      # Step 6: Verify build files
+      - name: Display Build Files
+        working-directory: Day 3
+        run: |
+          echo "Build artifact content:"
+          ls -la dist/
+
+      # Step 7: Upload artifact
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: nodejs-build
-          path: dist/
+          path: Day 3/dist/
+          if-no-files-found: error
           retention-days: 7
 
   download:
@@ -48,13 +58,26 @@ jobs:
     needs: build
 
     steps:
-      # Step 6: Download Artifact
+      # Step 8: Download artifact
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: nodejs-build
           path: downloaded-build/
 
-      # Step 7: Verify Downloaded Files
+      # Step 9: Verify downloaded artifact
       - name: Verify Artifact
-        run: ls -la downloaded-build/
+        run: |
+          echo "Downloaded artifact files:"
+          ls -la downloaded-build/
+
+      # Step 10: Display application content
+      - name: Display Build Content
+        run: cat downloaded-build/app.js
+
+      # Step 11: Deployment simulation
+      - name: Deploy Artifact
+        run: |
+          echo "Deploying Node.js build artifact..."
+          ls -la downloaded-build/
+          echo "Deployment completed successfully."
