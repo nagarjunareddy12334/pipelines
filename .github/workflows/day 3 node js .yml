@@ -1,0 +1,37 @@
+name  : NODE JS CI-demo
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+  #step 1: Checkout the code
+      - name: Checkout the code
+        uses: actions/checkout@v4
+ #step 2: Set up Node.js and cache npm
+      - name: Set up Node.js 
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+  #step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+ #stepp 4: lint the code
+      - name: Lint the code
+        run: npm run lint
+  #step 5: unit test the code   
+      - name: Run tests
+        run: npm test  
+ #step 6: build the code
+      - name: Build the code
+        run: npm run build
+ #step 7: Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nodejs-build
+          path: dist/
+          retention-days: 30
+          
