@@ -138,3 +138,119 @@ pipelines/
 ```
 
 *Note: Update the workflow filenames above according to the actual files available in your repository.*
+# Day 4 – Artifact Management using GitHub Actions
+
+## Goal
+
+Learn how to store, upload, download, manage, and share build outputs using GitHub Actions artifacts.
+
+## Topics Covered
+
+- Upload Artifact
+- Download Artifact
+- Artifact Retention
+- Sharing Artifacts Between Jobs
+- Deploy Using Artifacts
+
+## What is Artifact Management?
+
+Artifacts are files or collections of files generated during a GitHub Actions workflow.
+
+They help store build outputs, test reports, deployment packages, and other generated files. Artifacts can also be transferred between different jobs in a workflow.
+
+## Hands-on Implementation
+
+- Created an artifact management workflow using GitHub Actions.
+- Configured the Node.js application build process.
+- Generated build output inside the `dist` directory.
+- Uploaded the build folder using `actions/upload-artifact@v4`.
+- Configured artifact retention for 7 days.
+- Downloaded uploaded artifacts using `actions/download-artifact@v4`.
+- Shared artifacts between multiple jobs using job dependencies.
+- Verified downloaded artifact files.
+- Implemented a deployment simulation using downloaded artifacts.
+
+## Pipeline Workflow
+
+The artifact management pipeline consists of the following stages:
+
+1. **Checkout:** Retrieves source code from the GitHub repository.
+2. **Setup Node.js:** Configures the Node.js environment.
+3. **Install Dependencies:** Installs project dependencies using npm.
+4. **Build Application:** Generates application build files inside the `dist` directory.
+5. **Upload Artifact:** Uploads the generated build folder as a GitHub Actions artifact.
+6. **Download Artifact:** Downloads the uploaded artifact in another job.
+7. **Verify Artifact:** Checks the downloaded build files.
+8. **Deploy Application:** Copies downloaded files into the deployment directory.
+
+## GitHub Actions Configuration
+
+The workflow uses the following GitHub Actions:
+
+| Action | Purpose |
+|---|---|
+| `actions/checkout@v4` | Checkout repository code |
+| `actions/setup-node@v4` | Setup Node.js environment |
+| `actions/upload-artifact@v4` | Upload build artifacts |
+| `actions/download-artifact@v4` | Download build artifacts |
+
+## Artifact Retention
+
+Configured artifact retention using:
+
+```yaml
+- name: Upload Build Artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: nodejs-build
+    path: dist/
+    retention-days: 7
+```
+
+The uploaded artifact is retained for 7 days.
+
+## Sharing Artifacts Between Jobs
+
+Used the `needs` keyword to ensure the download job executes only after the build job completes successfully.
+
+```yaml
+download:
+  runs-on: ubuntu-latest
+  needs: build
+```
+
+The downloaded artifact is stored inside the `downloaded-build/` directory.
+
+## Deployment
+
+Implemented a basic deployment simulation by copying the downloaded build files into a separate deployment directory.
+
+```bash
+mkdir -p deployment
+cp -r downloaded-build/* deployment/
+```
+
+Verified the deployment files using:
+
+```bash
+ls -la deployment/
+```
+
+## Expected Results
+
+- Node.js application build completed successfully.
+- Build folder uploaded as an artifact.
+- Artifact retention configured for 7 days.
+- Uploaded artifact downloaded successfully.
+- Build files shared between workflow jobs.
+- Downloaded files verified.
+- Deployment simulation completed successfully.
+
+## Learning Outcomes
+
+- Understood GitHub Actions artifact management.
+- Learned artifact uploading and downloading.
+- Understood artifact retention policies.
+- Learned how to share artifacts between multiple jobs.
+- Practiced transferring build outputs between pipeline stages.
+- Understood how artifacts can be used in deployment workflows.
