@@ -1,0 +1,59 @@
+
+name: Day 5 - Multi Job Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+
+  # Job 1: Test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Test
+        run: |
+          echo "Testing application"
+          node app/index.js
+
+  # Job 2: Build
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Application
+        run: |
+          echo "Building application"
+          echo "Build completed successfully"
+
+  # Job 3: Docker
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          echo "Building Docker image"
+          docker build -t day5-demo:latest .
+
+  # Job 4: Deploy
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: |
+          echo "Deploying application"
+          echo "Deployment completed successfully"
