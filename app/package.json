@@ -1,0 +1,19 @@
+
+{
+  "name": "day5-multi-job-workflow",
+  "version": "1.0.0",
+  "description": "Node.js application for GitHub Actions multi-job workflow practice",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "github-actions",
+    "multi-job-workflow",
+    "docker"
+  ],
+  "author": "Developer",
+  "license": "MIT"
+}

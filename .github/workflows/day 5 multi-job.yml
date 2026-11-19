@@ -1,5 +1,6 @@
 
 name: Day 5 - Multi Job Workflow
+
 on:
   push:
     branches:
@@ -9,51 +10,77 @@ on:
 
 jobs:
 
-  # Job 1: Test
+  # JOB 1: TEST
   test:
+    name: Test Application
     runs-on: ubuntu-latest
-    
+
+    defaults:
+      run:
+        working-directory: app
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Test
-        run: |
-          echo "Testing application"
-          node app/index.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  # Job 2: Build
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+  # JOB 2: BUILD
   build:
+    name: Build Application
     needs: test
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Build Application
         run: |
-          echo "Building application"
-          echo "Build completed successfully"
+          echo "Building Node.js Application"
+          npm run build --if-present
+          echo "Build Completed Successfully"
 
-  # Job 3: Docker
+  # JOB 3: DOCKER
   docker:
+    name: Build Docker Image
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: |
-          echo "Building Docker image"
-          docker build -t day5-demo:latest .
+        run: docker build -t day5-demo:latest .
 
-  # Job 4: Deploy
+  # JOB 4: DEPLOY
   deploy:
+    name: Deploy Application
     needs: docker
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy Application
-        run: |
-          echo "Deploying application"
-          echo "Deployment completed successfully"
+        run: echo "Application Deployment Completed Successfully"
