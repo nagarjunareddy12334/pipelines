@@ -3,9 +3,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY app/package.json .
+COPY package.json .
 
-COPY app/index.js .
+COPY index.js .
 
 RUN npm install
 
