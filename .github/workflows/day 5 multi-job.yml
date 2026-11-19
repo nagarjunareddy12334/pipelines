@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: app
+        working-directory: day 5
 
     steps:
       - name: Checkout Code
