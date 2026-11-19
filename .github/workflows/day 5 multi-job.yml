@@ -1,6 +1,5 @@
 
 name: Day 5 - Multi Job Workflow
-
 on:
   push:
     branches:
@@ -13,6 +12,9 @@ jobs:
   # Job 1: Test
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
