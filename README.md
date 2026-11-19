@@ -254,3 +254,93 @@ ls -la deployment/
 - Learned how to share artifacts between multiple jobs.
 - Practiced transferring build outputs between pipeline stages.
 - Understood how artifacts can be used in deployment workflows.
+# Day 5 – Multi-Job Workflows (GitHub Actions)
+
+## 1. Task Objective
+
+Create and implement a multi-job GitHub Actions workflow to understand how multiple jobs execute in a CI/CD pipeline using sequential and parallel execution.
+
+## 2. Topics Covered
+
+- Jobs in GitHub Actions
+- Job dependencies using `needs`
+- Sequential execution
+- Parallel execution
+- Workflow execution order
+- Multi-job pipeline configuration
+
+## 3. Project Structure
+
+```text
+pipelines/
+│
+├── app/
+│   └── index.js
+│
+├── Dockerfile
+│
+└── .github/
+    └── workflows/
+        └── multi-job.yml
+```
+
+## 4. Workflow Implementation
+
+Created a GitHub Actions workflow containing four jobs:
+
+1. **Test:** Executes the application using Node.js and verifies the application.
+2. **Build:** Performs the application build process.
+3. **Docker:** Builds a Docker image using the Dockerfile.
+4. **Deploy:** Demonstrates the deployment stage.
+
+## 5. Job Dependencies
+
+Implemented the `needs` keyword to establish dependencies between jobs.
+
+```yaml
+build:
+  needs: test
+
+docker:
+  needs: build
+
+deploy:
+  needs: docker
+```
+
+This ensures that jobs execute sequentially, with each job starting after its dependent job completes successfully.
+
+## 6. Parallel Execution
+
+Implemented parallel execution by running independent jobs simultaneously.
+
+Used the `needs` keyword to ensure that the final Build job starts only after the required parallel jobs complete successfully.
+
+## 7. Expected Execution Flow
+
+```text
+Test
+  |
+  v
+Build
+  |
+  v
+Docker
+  |
+  v
+Deploy
+```
+
+## 8. Hands-on Tasks
+
+- Created a multi-job GitHub Actions workflow.
+- Configured sequential execution using job dependencies.
+- Implemented parallel job execution.
+- Integrated Node.js application testing.
+- Built a Docker image using GitHub Actions.
+- Verified workflow execution through the GitHub Actions tab.
+- Identified and fixed an application file path issue during testing.
+
+## 9. Learning Outcome
+
+Gained practical knowledge of multi-job workflows, job dependencies, sequential and parallel execution, and how to organize different stages of a CI/CD pipeline using GitHub Actions.
