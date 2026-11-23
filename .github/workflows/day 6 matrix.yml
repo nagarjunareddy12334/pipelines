@@ -40,9 +40,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+        working-directory: ./day-6
 
       - name: Run Tests
         run: npm test
+        working-directory: ./day-6
 
   # ubuntu-test:
   #   name: Additional Ubuntu Test
