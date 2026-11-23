@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          - ubuntu-latest
           - windows-latest
           - macos-latest
         node-version:
@@ -45,36 +46,36 @@ jobs:
         run: npm test
         working-directory: ./day-6
 
-  ubuntu-test:
-    name: Additional Ubuntu Test
-    runs-on: ubuntu-latest
+  # ubuntu-test:
+  #   name: Additional Ubuntu Test
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Check Repository Structure
-        run: |
-          echo "Current directory:"
-          pwd
+  #     - name: Check Repository Structure
+  #       run: |
+  #         echo "Current directory:"
+  #         pwd
 
-          echo "Repository files:"
-          ls -la
+  #         echo "Repository files:"
+  #         ls -la
 
-          echo "Searching for package.json:"
-          find . -name package.json
+  #         echo "Searching for package.json:"
+  #         find . -name package.json
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4S
+  #       with:
+  #         node-version: 20
 
-      - name: Install Dependencies
-        run: npm install
-        working-directory: ./day-6
+  #     - name: Install Dependencies
+  #       run: npm install
+  #       working-directory: ./day-6
 
-      - name: Run Tests
-        run: npm test
-        working-directory: ./day-6
+  #     - name: Run Tests
+  #       run: npm test
+  #       working-directory: ./day-6
 
      
