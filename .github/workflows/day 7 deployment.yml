@@ -1,0 +1,38 @@
+name : Mulitple environment Deployment
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  dev:
+    name: devplo of dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: deploy to dev
+        run: echo "deploy to dev"
+  qa:
+    name: deploy to Qa
+    needs: dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qa Deployment
+        run: echo "deploy to qa"
+  staging:
+    name: deploy to staging
+    needs: qa
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Staging Deployment
+        run: echo "deploy to staging"
+  production:
+    name: deploy to production
+    needs: staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production Deployment
+        run: echo "deploy to production"
